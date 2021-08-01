@@ -1,0 +1,640 @@
+//teacher' dilemma
+
+#include<bits/stdc++.h>
+#define numa 1000000007
+typedef long long ll;
+using namespace std;
+ll par[100002];
+ 
+ll find(ll x){
+    vector <ll> vi;
+    while(par[x]>0){
+        vi.push_back(x);
+        x=par[x];
+    }
+    for(ll k=0;k<vi.size();k++){
+        par[vi[k]]=x;
+    }
+    return x;
+    
+}
+ 
+ll Union(ll u,ll v){
+    par[u]+=par[v];
+    par[v]=u;
+}
+ 
+int main(){
+ 
+ll n,m;
+cin>>n>>m;
+for(ll i=1;i<=n;i++){
+    par[i]=-1;
+}
+for(ll i=1;i<=m;i++){
+    ll u,v;
+    cin>>u>>v;
+    u=find(u);
+    v=find(v);
+    if(u!=v){
+        Union(u,v);
+    }
+}
+ll ans=1;
+for(ll i=1;i<=n;i++){
+    if(par[i]<0){
+        ans=(ans*abs(par[i]))%numa;
+    }
+}
+cout<<ans<<endl;
+ 
+ 
+ 
+return 0;
+}
+
+
+-------------------------------------------------------------------------------------------
+
+//owl fight
+
+#include<bits/stdc++.h>
+using namespace std;
+ 
+int par[100003];
+ 
+int find(int x){
+    vector <int> vi;
+    while(par[x]>0){
+        vi.push_back(x);
+        x=par[x];
+    }
+    for(int i=0;i<vi.size();i++){
+        par[vi[i]]=x;
+    }
+    return x;
+}
+int Union(int u,int v){
+    par[u]=min(par[u],par[v]);
+    par[v]=u;
+}
+ 
+int main(){
+    int n,m,q;
+    cin>>n>>m;
+    for(int i=1;i<=n;i++){
+        par[i]=-i;
+    }
+    for(int i=1;i<=m;i++){
+        int u,v;
+        cin>>u>>v;
+        u=find(u);
+        v=find(v);
+        if(u!=v){
+            Union(u,v);
+        }
+    }
+    cin>>q;
+    while(q--){
+ 
+        int a,b,g,h;
+        cin>>a>>b;
+        g=find(a);
+        h=find(b);
+        if(par[g]==par[h]){
+            cout<<"TIE"<<endl;
+            continue;
+        }
+        if(par[g]<par[h]){
+            cout<<a<<endl;
+            continue;
+        }
+        if(par[g]>par[h]){
+            cout<<b<<endl;
+            continue;
+        }
+ 
+ 
+ 
+    }
+ 
+ 
+ 
+    return 0;
+}
+
+
+-----------------------------------------------
+
+
+//count friends
+
+#include<bits/stdc++.h>
+using namespace std;
+ 
+int par[100003];
+ 
+int find(int x){
+    vector <int> vi;
+    while(par[x]>0){
+        vi.push_back(x);
+        x=par[x];
+    }
+    for(int i=0;i<vi.size();i++){
+        par[vi[i]]=x;
+    }
+    return x;
+}
+ 
+int Union(int u,int v){
+    par[u]+=par[v];
+    par[v]=u;
+}
+ 
+int main(){
+    int n,m;
+    cin>>n>>m;
+    for(int i=1;i<=n;i++){
+        par[i]=-1;
+    }
+    for(int i=1;i<=m;i++){
+        int u,v;
+        cin>>u>>v;
+        u=find(u);
+        v=find(v);
+        if(u!=v){
+            Union(u,v);
+        }
+    }
+    for(int i=1;i<=n;i++){
+        int a=find(i);
+        cout<<abs(par[a])-1<<" ";
+ 
+    }
+    cout<<endl;
+ 
+    return 0;
+}
+
+
+
+--------------------------------------------------------
+
+
+
+//city flood
+
+
+#include<bits/stdc++.h>
+typedef long long ll;
+using namespace std;
+
+ll par[100003];
+
+ll find(ll x){
+    vector <ll> vi;
+    while(par[x]>0){
+        vi.push_back(x);
+        x=par[x];
+    }
+    for(ll i=0;i<vi.size();i++){
+        par[vi[i]]=x;
+    }
+    return x;
+
+
+}
+ll Union(ll a,ll b){
+    par[a]+=par[b];
+    par[b]=a;
+}
+
+
+int main(){
+    ll n,k;
+    cin>>n;
+    for(ll i=1;i<=n;i++)
+    par[i]=-1;
+    cin>>k;
+    while(k--){
+        ll a,b;
+        cin>>a>>b;
+        a=find(a);
+        b=find(b);
+        if(a!=b){
+            Union(a,b);
+        }
+    }
+    ll ans=0;
+    for(ll i=1;i<=n;i++){
+        if(par[i]<0){
+            ans++;
+        }
+    }
+    cout<<ans<<endl;
+
+    return 0;
+}
+
+
+
+-------------------------------
+
+
+//lexicographically minimal string
+
+
+#include<bits/stdc++.h>
+using namespace std;
+int par[1000];
+ 
+int find(int x){
+ 
+   vector <int> vi;
+   while(par[x]>0){
+      vi.push_back(x);
+      x=par[x];
+   }
+   for(int i=0;i<vi.size();i++){
+ 
+      par[vi[i]]=x;
+ 
+   }
+   return x;
+ 
+ 
+}
+ 
+int Union(int u,int v){
+ 
+   par[u]=max(par[u],par[v]);
+   par[v]=u;
+ 
+ 
+}
+ 
+int main(){
+ 
+ 
+ 
+   for(int i=0;i<97;i++){
+      par[i]=0;
+   }
+   for(int i=97;i<=122;i++){
+      par[i]=-i;
+   }
+   string a,b,c;
+   cin>>a>>b>>c;
+   for(int i=0;i<a.length();i++){
+ 
+      int m,n;
+      m=find((int)(a[i]));
+      n=find((int)(b[i]));
+      if(m!=n){
+         Union(m,n);
+      }
+ 
+ 
+   }
+ 
+   for(int i=0;i<c.length();i++){
+      int z=(int)(c[i]);
+      int ba=find(z);
+ 
+      int ko=par[ba];
+      ko=-ko;
+      cout<<(char)ko;
+ 
+   }
+ 
+ 
+   return 0;
+}
+
+
+
+---------------------------------------------------
+
+
+//killjee and cities
+
+
+#include<bits/stdc++.h>
+typedef long long ll;
+using namespace std;
+ 
+ll par[1000003];
+ll iopa[1000003];
+ll sizer[1000003];
+ 
+ll find(ll x){
+ 
+vector <ll> vi;
+while(par[x]>0){
+   vi.push_back(x);
+   x=par[x];
+}
+for(ll i=0;i<vi.size();i++){
+   par[vi[i]]=x;
+}
+return x;
+ 
+}
+ 
+ll Union(ll a,ll b){
+   if(sizer[a]<=sizer[b]){
+      par[a]=b;
+      sizer[b]+=sizer[a];
+ 
+   }
+   if(sizer[a]>sizer[b]){
+      par[b]=a;
+      sizer[a]+=sizer[b];
+   }
+ 
+ 
+}
+ 
+int main(){
+   ll n,m;
+   cin>>n>>m;
+   for(ll i=1;i<=n;i++){
+      sizer[i]=1;
+      par[i]=-1;
+   }
+   ll s1;
+   cin>>s1;
+   for(ll i=1;i<=m;i++){
+      ll a,b;
+      cin>>a>>b;
+      a=find(a);
+      b=find(b);
+      if(a!=b){
+         Union(a,b);
+      }
+   }
+   ll q;
+   cin>>q;
+   ll s2;
+   cin>>s2;
+   ll key=0;
+   for(ll i=1;i<=q;i++){
+      ll a,b;
+      cin>>a>>b;
+      a=find(a);
+      b=find(b);
+      if(a!=b){
+         Union(a,b);
+      }
+      ll ans=0;
+      for(ll j=1;j<=n;j++){
+         if(par[j]<0){
+            ans++;
+         }
+      }
+      iopa[key]=ans-1;
+      key++;
+ 
+ 
+   }
+   for(ll i=0;i<key;i++){
+      cout<<iopa[i]<<" ";
+   }
+ 
+ 
+ 
+ 
+   return 0;
+}
+
+
+
+-----
+alternate solution
+
+
+
+#include<bits/stdc++.h>
+typedef long long ll;
+using namespace std;
+ 
+ll par[1000003];
+ll iopa[1000003];
+ 
+ll find(ll x){
+ 
+vector <ll> vi;
+while(par[x]>0){
+   vi.push_back(x);
+   x=par[x];
+}
+for(ll i=0;i<vi.size();i++){
+   par[vi[i]]=x;
+}
+return x;
+ 
+}
+ 
+ll Union(ll a,ll b){
+ 
+   par[a]+=par[b];
+   par[b]=a;
+ 
+ 
+}
+ 
+int main(){
+   ll n,m;
+   cin>>n>>m;
+   for(ll i=1;i<=n;i++){
+      par[i]=-1;
+   }
+   ll s1;
+   cin>>s1;
+   for(ll i=1;i<=m;i++){
+      ll a,b;
+      cin>>a>>b;
+      a=find(a);
+      b=find(b);
+      if(a!=b){
+         Union(a,b);
+      }
+   }
+   ll q;
+   cin>>q;
+   ll s2;
+   cin>>s2;
+   ll key=0;
+   for(ll i=1;i<=q;i++){
+      ll a,b;
+      cin>>a>>b;
+      a=find(a);
+      b=find(b);
+      if(a!=b){
+         Union(a,b);
+      }
+      ll ans=0;
+      for(ll j=1;j<=n;j++){
+         if(par[j]<0){
+            ans++;
+         }
+      }
+      iopa[key]=ans-1;
+      key++;
+ 
+ 
+   }
+   for(ll i=0;i<key;i++){
+      cout<<iopa[i]<<" ";
+   }
+ 
+ 
+ 
+ 
+   return 0;
+}
+
+
+----------------------------------------------------------------------------------
+
+
+
+//47s passage
+
+
+
+#include<bits/stdc++.h>
+#define numa 1000000007
+typedef long long ll;
+using namespace std;
+
+ll par[1000003];
+ll pwala[1000003];
+ll awala[1000003];
+
+
+ll calci(ll b,ll a){    // power of two numbers nikalana with modular properties a raised to power b ko log b time mein solve karna ki tareeka
+
+ll res=1;
+a=a%numa;
+if(a==0){
+    cout<<0<<endl;
+    return 0;
+}
+while(b>0){
+    if(b&1)
+    res=(res*a)%numa;
+    b=b>>1;
+    a=(a*a)%numa;
+    
+
+}
+cout<<res<<" ";
+
+
+}
+
+ll find(ll x){
+
+    vector <ll> vi;
+    while(par[x]>0){
+        vi.push_back(x);
+        x=par[x];
+    }
+    for(ll i=0;i<vi.size();i++){
+        par[vi[i]]=x;
+    }
+    return x;
+
+
+}
+
+ll Union(ll u,ll v){
+
+    par[u]+=par[v];
+    par[v]=u;
+
+}
+
+int main(){
+
+
+    int t;
+    cin>>t;
+    while(t--){
+
+        ll n,m;
+        cin>>n>>m;
+        for(ll i=1;i<=n;i++){
+            par[i]=-1;
+        }
+        ll pass=m;
+        for(ll i=1;i<=m;i++){
+            
+            ll a,b;
+            cin>>a>>b;
+            a=find(a);
+            b=find(b);
+            if(a!=b){
+                Union(a,b);
+            }
+        }
+        ll p,key=0;
+        cin>>p;
+        
+        ll ban=0;
+        for(ll i=1;i<=p;i++){
+            pass++;
+                ban=0;
+            ll x,y;
+            cin>>x>>y;
+            x=find(x);
+            y=find(y);
+            if(x!=y){
+                Union(x,y);
+            }
+            for(ll j=1;j<=n;j++){
+                if(par[j]<0){
+                    ban++;
+                }
+            }
+            pwala[key]=ban-1;
+            awala[key]=pass;
+            
+            key++;
+
+
+
+        }
+        for(ll i=0;i<key;i++){
+            calci(pwala[i],awala[i]);
+        }
+	cout<<endl;
+
+    }
+
+
+
+    return 0;
+}
+
+
+----------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

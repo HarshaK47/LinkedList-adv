@@ -1,0 +1,482 @@
+// minimum spanning tree
+
+
+
+#include<bits/stdc++.h>
+typedef long long ll;
+using namespace std;
+
+
+class Edge{
+    public:
+        ll a;
+        ll b;
+        ll w;
+};
+
+
+
+Edge ar[100003];
+ll par[10003];
+
+bool comp(Edge a,Edge b){
+if(a.w<b.w)
+return true;
+
+
+return false;
+
+
+}
+
+ll find(ll x){
+    vector <ll> vi;
+    while(par[x]>0){
+        vi.push_back(x);
+        x=par[x];
+    }
+    for(ll i=0;i<vi.size();i++){
+        par[vi[i]]=x;
+    }
+    return x;
+}
+
+ll Union(ll j,ll k){
+    par[j]+=par[k];
+    par[k]=j;
+}
+
+
+
+int main(){
+ll n,m;
+cin>>n>>m;
+for(ll i=1;i<=n;i++){
+    par[i]=-1;
+}
+
+for(ll i=0;i<m;i++){
+    cin>>ar[i].a>>ar[i].b>>ar[i].w;
+}
+sort(ar,ar+m,comp);
+ll ans=0;
+for(ll i=0;i<m;i++){
+ll am,bm;
+am=find(ar[i].a);
+bm=find(ar[i].b);
+if(am!=bm){
+    ans+=ar[i].w;
+    Union(am,bm);
+    
+}
+}
+cout<<ans<<endl;
+
+    return 0;
+}
+
+
+
+------------------------------------------------------------------------------------
+
+
+// mr president
+
+
+
+#include<bits/stdc++.h>
+typedef long long ll;
+typedef unsigned long long ull;
+using namespace std;
+ 
+class Edge{
+ 
+    public:
+    ll a;
+    ll b;
+    ll c;
+ 
+ 
+};
+ 
+ 
+Edge ar[1000003];
+ll br[1000003];
+ll par[1000003];
+ 
+bool comp(Edge a,Edge b){
+if(a.c<b.c)
+return true;
+ 
+return false;
+ 
+ 
+}
+ 
+ll find(ll x){
+    vector <ll> vi;
+    while(par[x]>0){
+        vi.push_back(x);
+        x=par[x];
+    }
+    for(ll i=0;i<vi.size();i++){
+        par[vi[i]]=x;
+    }
+    return x;
+}
+ 
+ll Union(ll u,ll v){
+    
+    par[v]=u;
+}
+ 
+int main(){
+    ll n,m;
+    ull k;
+    cin>>n>>m>>k;
+ 
+    for(ll i=1;i<=n;i++){
+        par[i]=-1;
+    }
+    for(ll i=0;i<m;i++){
+        cin>>ar[i].a>>ar[i].b>>ar[i].c;
+    }
+    sort(ar,ar+m,comp);
+    ll totalsum=0,key=0;
+    for(ll i=0;i<m;i++){
+        ll bi,mi;
+        bi=ar[i].a;
+        mi=ar[i].b;
+        bi=find(bi);
+        mi=find(mi);
+        if(bi!=mi){
+            totalsum=totalsum+ar[i].c;
+            Union(bi,mi);
+            br[key]=ar[i].c;
+            key++;
+        }
+    }
+    if(totalsum<=k){
+        cout<<0<<endl;
+        exit(0);
+    }
+    ll opa=0;
+    ll cnt=0;
+    for(ll i=1;i<=n;i++){
+if(par[i]<0){                          // ye imp step to check tree hai meaning number of connected components are 1 or not  ye boy!!
+    cnt++;
+}
+    }
+    if(cnt>1 or cnt<1){
+        cout<<-1<<endl;
+        exit(0);
+    }
+    bool ban=0;
+    for(ll i=key-1;i>=0;i--){
+        totalsum=totalsum-br[i]+1;
+        opa++;
+        if(totalsum<=k){
+            ban=1;
+            break;
+        }
+    }
+    
+    
+    if(ban==1){
+        
+         
+        cout<<opa<<endl;
+        exit(0);
+    }
+    if(ban==0){
+        cout<<-1<<endl;
+    }
+ 
+ 
+ 
+ 
+    return 0;
+}
+
+
+
+----------------------------------------
+
+
+// proving intelligence to your girlfriend
+
+// here everything is fine just Finding Fibonacci needs to be optimized.
+
+
+#include<bits/stdc++.h>
+#define numa 1000000007
+typedef long long ll;
+using namespace std;
+
+
+class Edge{
+
+    public:
+    ll a;
+    ll b;
+    ll c;
+
+};
+
+Edge ar[1000002];
+
+ll fib[1000003];
+ll par[1000003];
+ll matr[1001][1001];
+
+
+bool comp(Edge ab,Edge bb){
+    if(ab.c < bb.c){
+        return true;
+    }
+    return false;
+}
+
+ll find(ll x){
+
+    vector <ll> vi;
+    while(par[x]>0){
+        vi.push_back(x);
+        x=par[x];
+    }
+    for(ll i=0;i<vi.size();i++){
+        par[vi[i]]=x;
+    }
+    return x;
+
+}
+ll Union(ll u,ll v){
+    par[v]=u;
+}
+
+int main(){
+
+    ll n,k1,k2,k3,k4;
+    cin>>n>>k1>>k2>>k3>>k4;
+    for(ll i=1;i<=(n*n);i++){
+        par[i]=-1;
+    }
+    fib[1]=1;
+    fib[2]=1;
+    for(ll i=3;i<=1000002;i++){
+        fib[i]=fib[i-1]+fib[i-2];
+    }
+    ll counter=1;
+    for(ll i=1;i<=n;i++){
+
+        for(ll j=1;j<=n;j++){
+            matr[i][j]=counter;
+            counter++;
+        }
+
+    }
+    // for rows is this one
+    ll rowkey=0,setter=0;
+    for(ll i=1;i<=n;i++){
+        
+        for(ll j=2;j<=n;j++){
+            ar[rowkey].a=matr[i][j];
+            ar[rowkey].b=matr[i][j-1];
+            ll inside=(fib[k1+setter]%numa + fib[k2+setter]%numa)%numa;
+            ar[rowkey].c=inside;
+            setter++;
+            rowkey++;
+        }
+
+    }
+    // for column this is
+    setter=0;
+    for(ll j=1;j<=n;j++){
+        
+        for(ll i=2;i<=n;i++){
+            ar[rowkey].a=matr[i][j];
+            ar[rowkey].b=matr[i-1][j];
+            ll inside=(fib[k3+setter]%numa+fib[k4+setter]%numa)%numa;
+            ar[rowkey].c=inside;
+            setter++;
+            rowkey++;
+        }
+
+    }
+
+    sort(ar,ar+rowkey,comp);
+    ll ans=0;
+    for(ll i=0;i<rowkey;i++){
+        ll de,er;
+        de=ar[i].a;
+        er=ar[i].b;
+        de=find(de);
+        er=find(er);
+        if(de!=er){
+            Union(de,er);
+            ans+=ar[i].c;
+        }        
+    }
+    cout<<ans<<endl;
+
+
+
+    return 0;
+}
+
+
+
+//just optimize finding nth fibonacci number
+
+--------------------------------------------
+
+
+
+// done girlfriend wala with improvised complexity of fibonacci
+
+
+
+#include<bits/stdc++.h>
+#define numa 1000000007
+typedef long long ll;
+using namespace std;
+
+
+const ll M = 1000000007; // modulo
+map<ll, ll> F;
+
+ll f(ll n) {
+	if (F.count(n)) return F[n];
+	ll k=n/2;
+	if (n%2==0) { // n=2*k
+		return F[n] = (f(k)*f(k) + f(k-1)*f(k-1)) % M;
+	} else { // n=2*k+1
+		return F[n] = (f(k)*f(k+1) + f(k-1)*f(k)) % M;
+	}
+}
+
+
+
+
+class Edge{
+
+    public:
+    ll a;
+    ll b;
+    ll c;
+
+};
+
+Edge ar[1000002];
+
+
+ll par[1000003];
+ll matr[1001][1001];
+
+
+bool comp(Edge ab,Edge bb){
+    if(ab.c < bb.c){
+        return true;
+    }
+    return false;
+}
+
+ll find(ll x){
+
+    vector <ll> vi;
+    while(par[x]>0){
+        vi.push_back(x);
+        x=par[x];
+    }
+    for(ll i=0;i<vi.size();i++){
+        par[vi[i]]=x;
+    }
+    return x;
+
+}
+ll Union(ll u,ll v){
+    par[v]=u;
+}
+
+int main(){
+
+    ll n,k1,k2,k3,k4;
+    cin>>n>>k1>>k2>>k3>>k4;
+    for(ll i=1;i<=(n*n);i++){
+        par[i]=-1;
+    }
+    F[0]=F[1]=1;
+    
+
+
+    ll counter=1;
+    for(ll i=1;i<=n;i++){
+
+        for(ll j=1;j<=n;j++){
+            matr[i][j]=counter;
+            counter++;
+        }
+
+    }
+    // for rows is this one
+    ll rowkey=0,setter=0;
+    for(ll i=1;i<=n;i++){
+        
+        for(ll j=2;j<=n;j++){
+            ar[rowkey].a=matr[i][j];
+            ar[rowkey].b=matr[i][j-1];
+            ll ba,bi;
+            ba=(k1+setter==0 ? 0 : f(k1+setter-1));
+            bi=(k2+setter==0 ? 0 : f(k2+setter-1));
+
+            ll inside=(ba%numa + bi%numa)%numa;
+            ar[rowkey].c=inside;
+            setter++;
+            rowkey++;
+        }
+
+    }
+    // for column this is
+    setter=0;
+    for(ll j=1;j<=n;j++){
+        
+        for(ll i=2;i<=n;i++){
+            ar[rowkey].a=matr[i][j];
+            ar[rowkey].b=matr[i-1][j];
+            ll ba,bi;
+            ba=(k4+setter==0 ? 0 : f(k4+setter-1));
+            bi=(k3+setter==0 ? 0 : f(k3+setter-1));
+
+            ll inside=(ba%numa + bi%numa)%numa;
+            ar[rowkey].c=inside;
+            setter++;
+            rowkey++;
+        }
+
+    }
+
+    sort(ar,ar+rowkey,comp);
+    ll ans=0;
+    for(ll i=0;i<rowkey;i++){
+        ll de,er;
+        de=ar[i].a;
+        er=ar[i].b;
+        de=find(de);
+        er=find(er);
+        if(de!=er){
+            Union(de,er);
+            ans+=ar[i].c;
+        }        
+    }
+    cout<<ans<<endl;
+
+
+
+    return 0;
+}
+
+
+// still kuch cases nhi ho rahe hain pass
+
+
+---------------------------------------------------
